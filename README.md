@@ -1,5 +1,12 @@
 # BeersApp
 
+
+- [x] Sorting by ABV (low-to-high, high-to-low, original order)
+- [x] Filtering
+- [x] Toggling between list view and grid view
+- [x] Adding beer to favorites
+
+      
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.2.11.
 
 ## Development server
