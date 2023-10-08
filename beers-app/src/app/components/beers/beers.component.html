@@ -1,0 +1,39 @@
+<div class="container">
+  <ng-container *ngIf="beers$ | async as beers; else noBeers">
+    <div class="header">
+      <div class="filter">
+        <mat-form-field appearance="outline" autocomlete="off">
+          <input
+            matInput
+            name="search"
+            [formControl]="filterField"
+            autocomplete="off"
+          />
+          <mat-hint>Enter something to filter beers</mat-hint>
+        </mat-form-field>
+      </div>
+      <div class="sort-buttons">
+        <button mat-button (click)="sortBeers('asc')">
+          Sort By ABV (low to high)
+        </button>
+        <button mat-button (click)="sortBeers('desc')">
+          Sort By ABV (high to low)
+        </button>
+        <button mat-button (click)="getDefaultArray()">
+          Back to default ordering
+        </button>
+      </div>
+    </div>
+    <div class="options">
+      <button mat-button (click)="gridView = !gridView">
+        {{ gridView ? "Switch To List View" : "Switch To Grid View" }}
+      </button>
+    </div>
+    <div class="beers" [class.grid-view]="gridView">
+      <app-beer *ngFor="let beer of beers" [beer]="beer"></app-beer>
+    </div>
+  </ng-container>
+</div>
+<!-- {{ beers$ | async | json }} -->
+
+<ng-template #noBeers> nobeers </ng-template>

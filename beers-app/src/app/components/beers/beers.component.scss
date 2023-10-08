@@ -1,0 +1,52 @@
+$header-height: 4vh;
+:host {
+  .container {
+    height: 100%;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    overflow: hidden;
+    .header {
+      mat-form-field {
+        width: 500px;
+        input {
+          height: 2rem;
+        }
+      }
+      height: $header-height;
+      display: flex;
+      justify-content: space-between;
+      margin: 1rem 0;
+      .mat-button {
+        margin: 0 0.5rem;
+        background-color: green;
+        color: white;
+        font-weight: 600;
+      }
+    }
+    .options {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.5rem;
+      padding: 0 1rem 1rem;
+      button {
+        background-color: orange;
+        color: white;
+        font-weight: 600;
+      }
+    }
+    .beers {
+      overflow-y: auto;
+      height: calc(100vh - $header-height - 5rem);
+      margin-bottom: 1rem;
+      &.grid-view {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1rem;
+        app-beer {
+          border: 1px solid gray;
+          height: fit-content;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,21 @@
+:host {
+  .beer {
+    display: grid;
+    grid-template-columns: 200px auto;
+    padding: 1rem;
+    img {
+      height: 200px;
+    }
+    .attrs {
+      .name {
+        color: green;
+        font-size: 2rem;
+      }
+      .tagline,
+      .abv {
+        color: gray;
+        font-size: 1.5rem;
+      }
+    }
+  }
+}
