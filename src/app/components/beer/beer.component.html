@@ -1,0 +1,21 @@
+<div class="beer">
+  <img [src]="beer.image_url" />
+  <div class="attrs">
+    <div class="name">
+      {{ beer.name }} {{ beer.id }}
+      <button
+        mat-icon-button
+        (click)="changeFavoriteStatus()"
+        [attr.title]="
+          beer.favorite ? 'Remove from favorites' : 'Mark as favorite'
+        "
+      >
+        <mat-icon [class.favorite]="beer.favorite">{{
+          beer.favorite ? "star" : "star_outline"
+        }}</mat-icon>
+      </button>
+    </div>
+    <div class="tagline">{{ beer.tagline }}</div>
+    <div class="abv">ABV: {{ beer.abv }}%</div>
+  </div>
+</div>

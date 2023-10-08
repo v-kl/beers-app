@@ -30,10 +30,13 @@
       </button>
     </div>
     <div class="beers" [class.grid-view]="gridView">
-      <app-beer *ngFor="let beer of beers" [beer]="beer"></app-beer>
+      <app-beer
+        *ngFor="let beer of beers"
+        [beer]="beer"
+        (favoriteStatusChanged)="onFavoriteStatusChanged(beer.id)"
+      ></app-beer>
     </div>
   </ng-container>
 </div>
-<!-- {{ beers$ | async | json }} -->
 
 <ng-template #noBeers> nobeers </ng-template>

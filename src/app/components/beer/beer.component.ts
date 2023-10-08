@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, EventEmitter, Output } from '@angular/core';
 import { IBeerViewModel } from 'src/app/models';
 
 @Component({
@@ -8,4 +8,10 @@ import { IBeerViewModel } from 'src/app/models';
 })
 export class BeerComponent {
   @Input() beer!: IBeerViewModel;
+
+  @Output() favoriteStatusChanged = new EventEmitter();
+
+  public changeFavoriteStatus() {
+    this.favoriteStatusChanged.emit();
+  }
 }

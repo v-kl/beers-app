@@ -4,6 +4,7 @@ import { BehaviorSubject, map, tap } from 'rxjs';
 
 import { BeerMapper } from '../helpers/beer-mapper';
 import { IBeerViewModel } from '../models';
+
 @Injectable()
 export class BeerService {
   private readonly beers$$ = new BehaviorSubject<IBeerViewModel[]>([]);
@@ -11,13 +12,26 @@ export class BeerService {
 
   private beersOriginalArray: IBeerViewModel[] = [];
 
-  constructor(private readonly beerApi: HttpBeerService) {}
+  private favorites: number[] = [];
+
+  constructor(private readonly beerApi: HttpBeerService) {
+    const favoriteBeers = localStorage.getItem('favoriteBeers');
+    this.favorites = favoriteBeers ? JSON.parse(favoriteBeers) : [];
+  }
 
   public getBeers() {
     return this.beerApi
       .get()
       .pipe(
-        map((beers) => beers.map(BeerMapper)),
+        map((beers) =>
+          beers
+            .map(BeerMapper)
+            .map((item) =>
+              this.favorites?.includes(item.id)
+                ? { ...item, favorite: true }
+                : item
+            )
+        ),
         tap((beers) => {
           this.beersOriginalArray = beers;
           this.beers$$.next(beers);
@@ -44,5 +58,23 @@ export class BeerService {
       beer.tagline.includes(filterText)
     );
     this.beers$$.next(filteredArr);
+  }
+
+  public updateFavorites(id: number) {
+    this.favorites = this.favorites.includes(id)
+      ? this.favorites.filter((item) => item !== id)
+      : [...this.favorites, id];
+
+    localStorage.setItem('favoriteBeers', JSON.stringify(this.favorites));
+
+    const previousOrderedBeersArr = this.beers$$.value;
+
+    const updatedBeerIndex = previousOrderedBeersArr.findIndex(
+      (beer) => beer.id === id
+    );
+    previousOrderedBeersArr[updatedBeerIndex].favorite =
+      !previousOrderedBeersArr[updatedBeerIndex].favorite;
+
+    this.beers$$.next(previousOrderedBeersArr);
   }
 }

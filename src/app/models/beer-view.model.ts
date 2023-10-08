@@ -4,4 +4,5 @@ export interface IBeerViewModel {
   abv: number;
   tagline: string;
   image_url: string;
+  favorite?: boolean;
 }

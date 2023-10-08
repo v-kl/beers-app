@@ -37,4 +37,8 @@ export class BeersComponent implements OnInit {
   public getDefaultArray() {
     this.beersService.getDefaultArray();
   }
+
+  public onFavoriteStatusChanged(id: number) {
+    this.beersService.updateFavorites(id);
+  }
 }

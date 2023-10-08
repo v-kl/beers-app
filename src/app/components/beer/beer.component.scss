@@ -8,8 +8,19 @@
     }
     .attrs {
       .name {
+        display: flex;
+        align-items: center;
         color: green;
         font-size: 2rem;
+      }
+      button {
+        background-color: transparent;
+        mat-icon {
+          color: gray;
+          &.favorite {
+            color: orange;
+          }
+        }
       }
       .tagline,
       .abv {
