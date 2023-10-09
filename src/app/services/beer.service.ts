@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpBeerService } from '../http/beer.service';
-import { BehaviorSubject, map, tap } from 'rxjs';
+import { BehaviorSubject, catchError, map, tap, throwError } from 'rxjs';
 
 import { BeerMapper } from '../helpers/beer-mapper';
 import { IBeerViewModel } from '../models';
@@ -35,6 +35,10 @@ export class BeerService {
         tap((beers) => {
           this.beersOriginalArray = beers;
           this.beers$$.next(beers);
+        }),
+        catchError((err) => {
+          this.beers$$.complete();
+          return throwError(() => err);
         })
       )
       .subscribe();

@@ -44,6 +44,7 @@
 </div>
 
 <ng-template #isLoading>
-  <div class="loading">loading...</div>
-  \</ng-template
->
+  <div class="loading">
+    {{ loading ? "loading..." : "Something went wrong - no beers for today" }}
+  </div>
+</ng-template>

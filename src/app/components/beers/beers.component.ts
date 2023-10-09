@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable, debounceTime, distinctUntilChanged, map } from 'rxjs';
-import { HttpBeerService } from 'src/app/http/beer.service';
+import { Observable, debounceTime, distinctUntilChanged, finalize } from 'rxjs';
 import { IBeerViewModel } from 'src/app/models/beer-view.model';
-import { BeerMapper } from 'src/app/helpers/beer-mapper';
 import { BeerService } from 'src/app/services/beer.service';
 import { FormControl } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -17,8 +15,11 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 export class BeersComponent implements OnInit {
   public filterField = new FormControl();
   public gridView = false;
+  public loading = true;
 
-  public beers$: Observable<IBeerViewModel[]> = this.beersService.beers$;
+  public beers$: Observable<IBeerViewModel[]> = this.beersService.beers$.pipe(
+    finalize(() => (this.loading = false))
+  );
   constructor(private readonly beersService: BeerService) {}
 
   ngOnInit(): void {
