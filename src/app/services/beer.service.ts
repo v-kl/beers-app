@@ -40,11 +40,10 @@ export class BeerService {
       .subscribe();
   }
 
-  public sortBeersByAbv(order: 'asc' | 'desc') {
-    const sortFunction =
-      order === 'asc'
-        ? (a: IBeerViewModel, b: IBeerViewModel) => a.abv - b.abv
-        : (a: IBeerViewModel, b: IBeerViewModel) => b.abv - a.abv;
+  public sortBeersByAbv(ascOrder: boolean) {
+    const sortFunction = (a: IBeerViewModel, b: IBeerViewModel) =>
+      ascOrder ? a.abv - b.abv : b.abv - a.abv;
+
     const orderedArr = [...this.beersOriginalArray].sort(sortFunction);
     this.beers$$.next(orderedArr);
   }

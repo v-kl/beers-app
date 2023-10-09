@@ -30,8 +30,8 @@ export class BeersComponent implements OnInit {
         else this.beersService.getDefaultArray();
       });
   }
-  public sortBeers(order: 'asc' | 'desc') {
-    this.beersService.sortBeersByAbv(order);
+  public sortBeers(ascOrder: boolean) {
+    this.beersService.sortBeersByAbv(ascOrder);
   }
 
   public getDefaultArray() {

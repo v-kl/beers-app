@@ -1,5 +1,5 @@
 <div class="container">
-  <ng-container *ngIf="beers$ | async as beers; else noBeers">
+  <ng-container *ngIf="beers$ | async as beers">
     <div class="header">
       <div class="filter">
         <mat-form-field appearance="outline" autocomlete="off">
@@ -13,10 +13,10 @@
         </mat-form-field>
       </div>
       <div class="sort-buttons">
-        <button mat-button (click)="sortBeers('asc')">
+        <button mat-button (click)="sortBeers(true)">
           Sort By ABV (low to high)
         </button>
-        <button mat-button (click)="sortBeers('desc')">
+        <button mat-button (click)="sortBeers(false)">
           Sort By ABV (high to low)
         </button>
         <button mat-button (click)="getDefaultArray()">
@@ -29,7 +29,11 @@
         {{ gridView ? "Switch To List View" : "Switch To Grid View" }}
       </button>
     </div>
-    <div class="beers" [class.grid-view]="gridView">
+    <div
+      class="beers"
+      *ngIf="beers.length; else isLoading"
+      [class.grid-view]="gridView"
+    >
       <app-beer
         *ngFor="let beer of beers"
         [beer]="beer"
@@ -39,4 +43,7 @@
   </ng-container>
 </div>
 
-<ng-template #noBeers> nobeers </ng-template>
+<ng-template #isLoading>
+  <div class="loading">loading...</div>
+  \</ng-template
+>

@@ -43,10 +43,18 @@ $header-height: 4vh;
         grid-template-columns: repeat(4, 1fr);
         gap: 1rem;
         app-beer {
-          border: 1px solid gray;
           height: fit-content;
+          background-color: #f7f7f7;
         }
       }
+    }
+    .loading {
+      height: 80vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2rem;
+      color: green;
     }
   }
 }
