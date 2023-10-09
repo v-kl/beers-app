@@ -35,7 +35,7 @@
       [class.grid-view]="gridView"
     >
       <app-beer
-        *ngFor="let beer of beers"
+        *ngFor="let beer of beers; trackBy: identify"
         [beer]="beer"
         (favoriteStatusChanged)="onFavoriteStatusChanged(beer.id)"
       ></app-beer>

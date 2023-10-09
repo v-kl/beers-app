@@ -4,6 +4,7 @@ import { BehaviorSubject, catchError, map, tap, throwError } from 'rxjs';
 
 import { BeerMapper } from '../helpers/beer-mapper';
 import { IBeerViewModel } from '../models';
+import { STORAGE_KEYS } from '../const/local-storage-keys';
 
 @Injectable()
 export class BeerService {
@@ -15,8 +16,15 @@ export class BeerService {
   private favorites: number[] = [];
 
   constructor(private readonly beerApi: HttpBeerService) {
-    const favoriteBeers = localStorage.getItem('favoriteBeers');
+    const favoriteBeers = localStorage.getItem(STORAGE_KEYS.FAVORITE_BEERS);
     this.favorites = favoriteBeers ? JSON.parse(favoriteBeers) : [];
+    if (favoriteBeers) {
+      try {
+        this.favorites = JSON.parse(favoriteBeers);
+      } catch (err) {
+        console.error(err);
+      }
+    }
   }
 
   public getBeers() {
@@ -37,7 +45,7 @@ export class BeerService {
           this.beers$$.next(beers);
         }),
         catchError((err) => {
-          this.beers$$.complete();
+          this.beers$$.error(err);
           return throwError(() => err);
         })
       )
@@ -57,27 +65,31 @@ export class BeerService {
   }
 
   public filterBeers(filterText: string) {
-    const filteredArr = [...this.beersOriginalArray].filter((beer) =>
-      beer.tagline.includes(filterText)
+    const filteredArr = this.beersOriginalArray.filter((beer) =>
+      beer.tagline.toLowerCase().includes(filterText.toLowerCase())
     );
     this.beers$$.next(filteredArr);
   }
 
   public updateFavorites(id: number) {
-    this.favorites = this.favorites.includes(id)
+    const isFavorite = this.favorites.includes(id);
+    this.favorites = isFavorite
       ? this.favorites.filter((item) => item !== id)
       : [...this.favorites, id];
 
-    localStorage.setItem('favoriteBeers', JSON.stringify(this.favorites));
+    localStorage.setItem(
+      STORAGE_KEYS.FAVORITE_BEERS,
+      JSON.stringify(this.favorites)
+    );
 
     const previousOrderedBeersArr = this.beers$$.value;
 
     const updatedBeerIndex = previousOrderedBeersArr.findIndex(
       (beer) => beer.id === id
     );
-    previousOrderedBeersArr[updatedBeerIndex].favorite =
-      !previousOrderedBeersArr[updatedBeerIndex].favorite;
+    const updatedBeerFavoritesArr = [...previousOrderedBeersArr];
+    updatedBeerFavoritesArr[updatedBeerIndex].favorite = !isFavorite;
 
-    this.beers$$.next(previousOrderedBeersArr);
+    this.beers$$.next(updatedBeerFavoritesArr);
   }
 }
