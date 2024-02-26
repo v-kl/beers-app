@@ -1,5 +1,5 @@
 # BeersApp
-
+just quickly made once as a test task for a project, + deployed to github pages https://v-kl.github.io/beers-app/
 
 - [x] Sorting by ABV (low-to-high, high-to-low, original order)
 - [x] Filtering
